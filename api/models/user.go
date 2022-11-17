@@ -21,7 +21,7 @@ type CreateUser struct {
 	LastName        string `json:"last_name" binding:"required,min=2,max=30"`
 	PhoneNumber     string `json:"phone_number"`
 	Email           string `json:"email" binding:"required,email"`
-	Gender          string `json:"gender" binding:"oneof=male female"`
+	Gender          string `json:"gender" binding:"oneof=male female" default:"male"`
 	Password        string `json:"password" binding:"required,min=6,max=16"`
 	UserName        string `json:"username" binding:"required,min=2,max=30"`
 	ProfileImageUrl string `json:"profile_image_url"`

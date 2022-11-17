@@ -15,47 +15,42 @@ type File struct {
 	File *multipart.FileHeader `form:"file" binding:"required"`
 }
 
-// @Router /likes [post]
-// @Summary Create a likes
-// @Description Create a Likes
-// @Tags Like
+// @Router /file-upload [post]
+// @Summary File upload
+// @Description File upload
+// @Tags file-upload
 // @Accept json
 // @Produce json
-// @Param like body models.CreateLike true "like"
-// @Success 201 {object} models.Like
-// @Failure 400 {object} models.ErrorResponse
+// @Param file formData file true "File"
+// @Success 200 {object} models.ResponseOK
 // @Failure 500 {object} models.ErrorResponse
 func (h *handlerV1) UploadFile(c *gin.Context) {
 	var file File
-
-	err := c.ShouldBindJSON(&file)
+	err := c.ShouldBind(&file)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			Error: err.Error(),
 		})
 		return
 	}
-
 	id := uuid.New()
 	fileName := id.String() + filepath.Ext(file.File.Filename)
 
 	dst, _ := os.Getwd()
 
-	if _,err:=os.Stat(dst+"/media");os.IsNotExist(err){
-		os.Mkdir(dst+"/media",os.ModePerm)
+	if _, err := os.Stat(dst + "/media"); os.IsNotExist(err) {
+		os.Mkdir(dst+"/media", os.ModePerm)
 	}
 
-	filePath:="/media/"+fileName
-	if err=c.SaveUploadedFile(file.File,dst+filePath); err!=nil{
+	filePath := "/media/" + fileName
+	if err = c.SaveUploadedFile(file.File, dst+filePath); err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			Error: err.Error(),
 		})
 		return
 	}
 
-
 	c.JSON(http.StatusCreated, gin.H{
 		"filename": filePath,
 	})
-	
 }

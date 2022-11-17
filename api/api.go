@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	_ "github.com/samandar2605/post/api/docs"  // for swagger
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
-	_ "github.com/samandar2605/post/api/docs" // for swagger
 )
 
 type RouterOptions struct {
@@ -32,42 +32,46 @@ func New(opt *RouterOptions) *gin.Engine {
 
 	apiV1 := router.Group("/v1")
 
-
 	// Category
-	apiV1.GET("/categories",handlerV1.GetCategoryAll)
-	apiV1.GET("/categories/:id",handlerV1.GetCategory)
-	apiV1.POST("/categories",handlerV1.CreateCategory)
-	apiV1.PUT("/categories/:id",handlerV1.UpdateCategory)
-	apiV1.DELETE("/categories/:id",handlerV1.DeleteCategory)
+	apiV1.GET("/categories", handlerV1.GetCategory)
+	apiV1.GET("/categories/:id", handlerV1.GetCategory)
+	apiV1.POST("/categories", handlerV1.CreateCategory)
+	apiV1.PUT("/categories/:id", handlerV1.UpdateCategory)
+	apiV1.DELETE("/categories/:id", handlerV1.DeleteCategory)
 
 	// Like
-	apiV1.GET("/likes/:id",handlerV1.GetLike)
-	apiV1.GET("/likes",handlerV1.GetAllLike)
-	apiV1.POST("/likes",handlerV1.CreateLike)
-	apiV1.PUT("/likes/:id",handlerV1.UpdateLike)
-	apiV1.DELETE("/likes/:id",handlerV1.DeleteLike)
-	
+	apiV1.GET("/likes/:id", handlerV1.GetLike)
+	apiV1.GET("/likes", handlerV1.GetAllLike)
+	apiV1.POST("/likes", handlerV1.CreateLike)
+	apiV1.PUT("/likes/:id", handlerV1.UpdateLike)
+	apiV1.DELETE("/likes/:id", handlerV1.DeleteLike)
 
 	// User
-	apiV1.GET("/users",handlerV1.GetUserAll)
-	apiV1.GET("/users/:id",handlerV1.GetUser)
-	apiV1.POST("/users",handlerV1.CreateUser)
-	apiV1.PUT("/users/:id",handlerV1.UpdateUser)
-	apiV1.DELETE("/users/:id",handlerV1.DeleteUser)
+	apiV1.GET("/users", handlerV1.GetUserAll)
+	apiV1.GET("/users/:id", handlerV1.GetUser)
+	apiV1.POST("/users", handlerV1.CreateUser)
+	apiV1.PUT("/users/:id", handlerV1.UpdateUser)
+	apiV1.DELETE("/users/:id", handlerV1.DeleteUser)
 
 	// Comment
-	apiV1.GET("/comments",handlerV1.GetAllComment)
-	apiV1.GET("/comments/:id",handlerV1.GetComment)
-	apiV1.POST("/comments",handlerV1.CreateComment)
-	apiV1.PUT("/comments/:id",handlerV1.UpdateComment)
-	apiV1.DELETE("/comments/:id",handlerV1.DeleteComment)
+	apiV1.GET("/comments", handlerV1.GetAllComment)
+	apiV1.GET("/comments/:id", handlerV1.GetComment)
+	apiV1.POST("/comments", handlerV1.CreateComment)
+	apiV1.PUT("/comments/:id", handlerV1.UpdateComment)
+	apiV1.DELETE("/comments/:id", handlerV1.DeleteComment)
 
 	// Post
-	apiV1.GET("/posts",handlerV1.GetPostAll)
-	apiV1.GET("/posts/:id",handlerV1.GetPost)
-	apiV1.POST("/posts",handlerV1.CreatePost)
-	apiV1.PUT("/posts/:id",handlerV1.UpdatePost)
-	apiV1.DELETE("/posts/:id",handlerV1.DeletePost)
+	apiV1.GET("/posts", handlerV1.GetPostAll)
+	apiV1.GET("/posts/:id", handlerV1.GetPost)
+	apiV1.POST("/posts", handlerV1.CreatePost)
+	apiV1.PUT("/posts/:id", handlerV1.UpdatePost)
+	apiV1.DELETE("/posts/:id", handlerV1.DeletePost)
+
+	// file upload
+	apiV1.POST("/file-upload", handlerV1.UploadFile)
+
+	// Register
+	apiV1.POST("/auth/register", handlerV1.Register)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

@@ -16,9 +16,49 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/auth/register": {
+            "post": {
+                "description": "Register a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register a user",
+                "parameters": [
+                    {
+                        "description": "Data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.RegisterResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/categories": {
             "get": {
-                "description": "Get Category",
+                "description": "Get all categories",
                 "consumes": [
                     "application/json"
                 ],
@@ -28,25 +68,24 @@ const docTemplate = `{
                 "tags": [
                     "category"
                 ],
-                "summary": "Get Category",
+                "summary": "Get all categories",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Limit",
+                        "default": 10,
                         "name": "limit",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "Page",
+                        "default": 1,
                         "name": "page",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "Search",
                         "name": "search",
                         "in": "query"
                     }
@@ -55,7 +94,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Category"
+                            "$ref": "#/definitions/models.GetAllCategoriesResponse"
                         }
                     },
                     "500": {
@@ -423,6 +462,44 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/file-upload": {
+            "post": {
+                "description": "File upload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "file-upload"
+                ],
+                "summary": "File upload",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "File",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseOK"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -1178,6 +1255,7 @@ const docTemplate = `{
                 },
                 "gender": {
                     "type": "string",
+                    "default": "male",
                     "enum": [
                         "male",
                         "female"
@@ -1218,6 +1296,20 @@ const docTemplate = `{
             "properties": {
                 "error": {
                     "type": "string"
+                }
+            }
+        },
+        "models.GetAllCategoriesResponse": {
+            "type": "object",
+            "properties": {
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Category"
+                    }
+                },
+                "count": {
+                    "type": "integer"
                 }
             }
         },
@@ -1267,6 +1359,86 @@ const docTemplate = `{
                 },
                 "views_count": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.RegisterRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 2
+                },
+                "gender": {
+                    "type": "string",
+                    "default": "male",
+                    "enum": [
+                        "male",
+                        "female"
+                    ]
+                },
+                "last_name": {
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 2
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 16,
+                    "minLength": 6
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 2
+                }
+            }
+        },
+        "models.RegisterResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ResponseOK": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
                 }
             }
         },

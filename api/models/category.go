@@ -11,3 +11,8 @@ type Category struct {
 type CreateCategory struct {
 	Title string `json:"title" binding:"required"`
 }
+
+type GetAllCategoriesResponse struct {
+	Categories []*Category `json:"categories"`
+	Count      int     `json:"count"`
+}
