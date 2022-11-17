@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/Categories": {
+        "/categories": {
             "get": {
                 "description": "Get Category",
                 "consumes": [
@@ -65,9 +65,7 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/categories": {
+            },
             "post": {
                 "description": "Create a category",
                 "consumes": [
@@ -359,7 +357,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Update a commentss",
+                "description": "Update a comments",
                 "consumes": [
                     "application/json"
                 ],
@@ -1137,7 +1135,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "category_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "description": {
                     "type": "string"
@@ -1149,19 +1147,16 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "views_count": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },
         "models.CreateUser": {
             "type": "object",
             "properties": {
-                "created_at": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 },
@@ -1220,7 +1215,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "category_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "created_at": {
                     "type": "string"
@@ -1241,10 +1236,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "views_count": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },

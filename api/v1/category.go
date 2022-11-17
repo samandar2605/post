@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -92,7 +93,7 @@ func (h *handlerV1) CreateCategory(c *gin.Context) {
 // @Param search query string false "Search"
 // @Success 200 {object} models.Category
 // @Failure 500 {object} models.ErrorResponse
-// @Router /Categories [get]
+// @Router /categories [get]
 func (h *handlerV1) GetCategoryAll(ctx *gin.Context) {
 	queryParams, err := validateGetCategoryQuery(ctx)
 	if err != nil {
@@ -150,7 +151,7 @@ func validateGetCategoryQuery(ctx *gin.Context) (repo.GetCategoryQuery, error) {
 // @Failure 500 {object} models.ErrorResponse
 // @Router /categories/{id} [put]
 func (h *handlerV1) UpdateCategory(ctx *gin.Context) {
-	var b repo.Category
+	var b models.Category
 
 	err := ctx.ShouldBindJSON(&b)
 	if err != nil {
@@ -169,7 +170,10 @@ func (h *handlerV1) UpdateCategory(ctx *gin.Context) {
 	}
 
 	b.Id = id
-	category, err := h.storage.Category().Update(b)
+	category, err := h.storage.Category().Update(&repo.Category{
+		Title: b.Title,
+	})
+	fmt.Println(category)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to create category",

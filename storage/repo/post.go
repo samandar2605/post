@@ -3,8 +3,8 @@ package repo
 import "time"
 
 type GetPostQuery struct {
-	Page  int
-	Limit int
+	Page   int
+	Limit  int
 	Search string
 }
 
@@ -14,15 +14,15 @@ type GetAllPostResult struct {
 }
 
 type Post struct {
-	Id          int
-	Title       string
-	Description string
-	ImageUrl    string
-	UserId      string
-	CategoryId  string
-	UpdatedAt   string
-	ViewsCount  string
-	CreatedAt   time.Time
+	Id          int       `json:"id" db:"id"`
+	Title       string    `json:"title" db:"title"`
+	Description string    `json:"description" db:"description"`
+	ImageUrl    string    `json:"image_url" db:"image_url"`
+	UserId      int       `json:"user_id" db:"user_id"`
+	CategoryId  int       `json:"category_id" db:"category_id"`
+	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
+	ViewsCount  int       `json:"views_count" db:"views_count"`
+	CreatedAt   time.Time `json:"created_at" db:"created_at"`
 }
 
 type PostStorageI interface {
@@ -32,5 +32,3 @@ type PostStorageI interface {
 	Update(usr *Post) (*Post, error)
 	Delete(id int) error
 }
-
-

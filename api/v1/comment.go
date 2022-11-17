@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -165,7 +166,7 @@ func validateGetCommentQuery(ctx *gin.Context) (repo.GetCommentQuery, error) {
 }
 
 // @Summary Update a comment
-// @Description Update a commentss
+// @Description Update a comments
 // @Tags comments
 // @Accept json
 // @Produce json
@@ -175,7 +176,7 @@ func validateGetCommentQuery(ctx *gin.Context) (repo.GetCommentQuery, error) {
 // @Failure 500 {object} models.ErrorResponse
 // @Router /comments/{id} [put]
 func (h *handlerV1) UpdateComment(ctx *gin.Context) {
-	var b repo.Comment
+	var b models.Comment
 
 	err := ctx.ShouldBindJSON(&b)
 	if err != nil {
@@ -194,7 +195,12 @@ func (h *handlerV1) UpdateComment(ctx *gin.Context) {
 	}
 
 	b.Id = id
-	comment, err := h.storage.Comment().Update(&b)
+	comment, err := h.storage.Comment().Update(&repo.Comment{
+		PostId:      b.PostId,
+		UserId:      b.UserId,
+		Description: b.Description,
+	})
+	fmt.Println(comment)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to create comment",

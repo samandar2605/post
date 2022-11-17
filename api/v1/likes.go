@@ -170,7 +170,7 @@ func validateGetLikeQuery(ctx *gin.Context) (repo.GetLikesQuery, error) {
 // @Failure 500 {object} models.ErrorResponse
 // @Router /likes/{id} [put]
 func (h *handlerV1) UpdateLike(ctx *gin.Context) {
-	var b repo.Like
+	var b models.Like
 
 	err := ctx.ShouldBindJSON(&b)
 	if err != nil {
@@ -189,7 +189,11 @@ func (h *handlerV1) UpdateLike(ctx *gin.Context) {
 	}
 
 	b.Id = id
-	like, err := h.storage.Like().Update(&b)
+	like, err := h.storage.Like().Update(&repo.Like{
+		PostId: b.PostId,
+		UserId: b.UserId,
+		Status: b.Status,
+	})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to create like",

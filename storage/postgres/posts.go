@@ -25,7 +25,7 @@ func (pr *postRepo) Create(p *repo.Post) (*repo.Post, error) {
 			image_url,
 			user_id,
 			category_id,
-			views_count,
+			views_count
 		)values($1,$2,$3,$4,$5,$6)
 		RETURNING id,created_at
 	`
@@ -148,7 +148,7 @@ func (pr *postRepo) GetAll(param repo.GetPostQuery) (*repo.GetAllPostResult, err
 
 func (pr *postRepo) Update(post *repo.Post) (*repo.Post, error) {
 	query := `
-		update users set 
+		update posts set 
 			title=$1,
 			description=$2,
 			image_url=$3,
@@ -157,8 +157,9 @@ func (pr *postRepo) Update(post *repo.Post) (*repo.Post, error) {
 			views_count=$6,
 			updated_at=$7
 		where id=$8
+		RETURNING updated_at
 	`
-	_, err := pr.db.Exec(
+	row := pr.db.QueryRow(
 		query,
 		post.Title,
 		post.Description,
@@ -170,9 +171,10 @@ func (pr *postRepo) Update(post *repo.Post) (*repo.Post, error) {
 		post.Id,
 	)
 
-	if err != nil {
-		return nil, err
+	if err:=row.Scan(&post.UpdatedAt);err != nil {
+		return nil,err
 	}
+
 	return post, nil
 }
 

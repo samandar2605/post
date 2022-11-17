@@ -9,7 +9,7 @@
     "host": "localhost:8000",
     "basePath": "/v1",
     "paths": {
-        "/Categories": {
+        "/categories": {
             "get": {
                 "description": "Get Category",
                 "consumes": [
@@ -58,9 +58,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/categories": {
+            },
             "post": {
                 "description": "Create a category",
                 "consumes": [
@@ -352,7 +350,7 @@
                 }
             },
             "put": {
-                "description": "Update a commentss",
+                "description": "Update a comments",
                 "consumes": [
                     "application/json"
                 ],
@@ -1130,7 +1128,7 @@
             "type": "object",
             "properties": {
                 "category_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "description": {
                     "type": "string"
@@ -1142,19 +1140,16 @@
                     "type": "string"
                 },
                 "user_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "views_count": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },
         "models.CreateUser": {
             "type": "object",
             "properties": {
-                "created_at": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 },
@@ -1213,7 +1208,7 @@
             "type": "object",
             "properties": {
                 "category_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "created_at": {
                     "type": "string"
@@ -1234,10 +1229,10 @@
                     "type": "string"
                 },
                 "user_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "views_count": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },

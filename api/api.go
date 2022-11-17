@@ -34,8 +34,8 @@ func New(opt *RouterOptions) *gin.Engine {
 
 
 	// Category
-	apiV1.GET("/categories/:id",handlerV1.GetCategory)
 	apiV1.GET("/categories",handlerV1.GetCategoryAll)
+	apiV1.GET("/categories/:id",handlerV1.GetCategory)
 	apiV1.POST("/categories",handlerV1.CreateCategory)
 	apiV1.PUT("/categories/:id",handlerV1.UpdateCategory)
 	apiV1.DELETE("/categories/:id",handlerV1.DeleteCategory)
@@ -63,11 +63,11 @@ func New(opt *RouterOptions) *gin.Engine {
 	apiV1.DELETE("/comments/:id",handlerV1.DeleteComment)
 
 	// Post
-	apiV1.GET("/post",handlerV1.GetPostAll)
-	apiV1.GET("/post/:id",handlerV1.GetPost)
-	apiV1.POST("/post",handlerV1.CreatePost)
-	apiV1.PUT("/post/:id",handlerV1.UpdatePost)
-	apiV1.DELETE("/post/:id",handlerV1.DeletePost)
+	apiV1.GET("/posts",handlerV1.GetPostAll)
+	apiV1.GET("/posts/:id",handlerV1.GetPost)
+	apiV1.POST("/posts",handlerV1.CreatePost)
+	apiV1.PUT("/posts/:id",handlerV1.UpdatePost)
+	apiV1.DELETE("/posts/:id",handlerV1.DeletePost)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

@@ -12,7 +12,7 @@ type CategoryStorageI interface {
 	Create(u *Category) (*Category, error)
 	Get(id int) (*Category, error)
 	GetAll(param GetCategoryQuery) (*GetAllCategoriesResult, error)
-	Update(category Category) (*Category, error)
+	Update(category *Category) (*Category, error)
 	Delete(id int) error
 }
 

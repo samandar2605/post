@@ -167,7 +167,7 @@ func validateGetPostQuery(ctx *gin.Context) (repo.GetPostQuery, error) {
 // @Failure 500 {object} models.ErrorResponse
 // @Router /posts/{id} [put]
 func (h *handlerV1) UpdatePost(ctx *gin.Context) {
-	var b repo.Post
+	var b models.Post
 
 	err := ctx.ShouldBindJSON(&b)
 	if err != nil {
@@ -186,10 +186,17 @@ func (h *handlerV1) UpdatePost(ctx *gin.Context) {
 	}
 
 	b.Id = id
-	post, err := h.storage.Post().Update(&b)
+	post, err := h.storage.Post().Update(&repo.Post{
+		Title: b.Title,
+		Description: b.Description,
+		ImageUrl: b.ImageUrl,
+		UserId: b.UserId,
+		CategoryId: b.CategoryId,
+		ViewsCount: b.ViewsCount,
+	})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"message": "failed to create post",
+			"message": err.Error(),
 		})
 		return
 	}

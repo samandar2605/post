@@ -46,6 +46,7 @@ func (h *handlerV1) GetUser(c *gin.Context) {
 		Username:        resp.UserName,
 		ProfileImageUrl: resp.ProfileImageUrl,
 		Type:            resp.Type,
+		CreatedAt:       resp.CreatedAt,
 	})
 }
 
@@ -63,7 +64,6 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 	var (
 		req models.CreateUser
 	)
-
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
@@ -78,7 +78,7 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 		PhoneNumber:     req.PhoneNumber,
 		Email:           req.Email,
 		Gender:          req.Gender,
-		UserName:        req.Username,
+		UserName:        req.UserName,
 		Password:        req.Password,
 		ProfileImageUrl: req.ProfileImageUrl,
 		Type:            req.Type,
@@ -162,10 +162,6 @@ func validateGetUsersQuery(ctx *gin.Context) (repo.GetUserQuery, error) {
 	}, nil
 }
 
-
-
-
-
 // @Summary Update a user
 // @Description Update a userss
 // @Tags users
@@ -177,9 +173,11 @@ func validateGetUsersQuery(ctx *gin.Context) (repo.GetUserQuery, error) {
 // @Failure 500 {object} models.ErrorResponse
 // @Router /users/{id} [put]
 func (h *handlerV1) UpdateUser(ctx *gin.Context) {
-	var b repo.User
+	var (
+		req models.User
+	)
 
-	err := ctx.ShouldBindJSON(&b)
+	err := ctx.ShouldBindJSON(&req)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
@@ -195,18 +193,27 @@ func (h *handlerV1) UpdateUser(ctx *gin.Context) {
 		return
 	}
 
-	b.Id = id
-	user, err := h.storage.User().Update(&b)
+	req.Id = id
+	user, err := h.storage.User().Update(&repo.User{
+		FirstName:       req.FirstName,
+		LastName:        req.LastName,
+		PhoneNumber:     req.PhoneNumber,
+		Email:           req.Email,
+		Gender:          req.Gender,
+		UserName:        req.Username,
+		Password:        req.Password,
+		ProfileImageUrl: req.ProfileImageUrl,
+		Type:            req.Type,
+	})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"message": "failed to create user",
+			"message": err.Error(),
 		})
 		return
 	}
 
 	ctx.JSON(http.StatusOK, user)
 }
-
 
 // @Summary Delete a User
 // @Description Delete a user
@@ -228,7 +235,7 @@ func (h *handlerV1) DeleteUser(ctx *gin.Context) {
 	err = h.storage.User().Delete(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"message": "failed to Delete method",
+			"message": err.Error(),
 		})
 		return
 	}
@@ -236,4 +243,3 @@ func (h *handlerV1) DeleteUser(ctx *gin.Context) {
 		"message": "successful delete method",
 	})
 }
-

@@ -24,7 +24,7 @@ func (ur *userRepo) Create(u *repo.User) (*repo.User, error) {
 			phone_number,
 			email,
 			gender,
-			user_name,
+			username,
 			password,
 			profile_image_url,
 			type
@@ -66,10 +66,10 @@ func (ur *userRepo) Get(id int) (*repo.User, error) {
 			phone_number,
 			email,
 			gender,
-			user_name,
+			username,
 			password,
 			profile_image_url,
-			type
+			type,
 			created_at
 		from users
 		where id=$1
@@ -118,7 +118,7 @@ func (ur *userRepo) GetAll(param repo.GetUserQuery) (*repo.GetAllUsersResult, er
 			phone_number,
 			email,
 			gender,
-			user_name,
+			username,
 			password,
 			profile_image_url,
 			type,
@@ -169,7 +169,7 @@ func (ur *userRepo) Update(usr *repo.User) (*repo.User, error) {
 			phone_number=$3,
 			email=$4,
 			gender=$5,
-			user_name=$6,
+			username=$6,
 			password=$7,
 			profile_image_url=$8,
 			type=$9

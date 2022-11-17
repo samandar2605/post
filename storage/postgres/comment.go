@@ -139,12 +139,12 @@ func (cr *commentRepo) GetAll(param repo.GetCommentQuery) (*repo.GetAllCommentsR
 func (cr *commentRepo) Update(comment *repo.Comment) (*repo.Comment, error) {
 	query := `
 		update comments set 
-			post_id =$1,
-			user_id =$2,
-			description =$3,
-			updated_at =$4,
+			post_id=$1,
+			user_id=$2,
+			description=$3,
+			updated_at=$4
 		where id=$5
-		RETURNING 
+		RETURNING
 			id,
 			created_at,
 			updated_at
@@ -155,6 +155,7 @@ func (cr *commentRepo) Update(comment *repo.Comment) (*repo.Comment, error) {
 		comment.UserId,
 		comment.Description,
 		time.Now(),
+		comment.Id,
 	)
 
 	if err := result.Scan(

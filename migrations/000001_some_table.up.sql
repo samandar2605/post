@@ -23,29 +23,28 @@ CREATE TABLE if not exists "posts"(
     "title" VARCHAR(255) NOT NULL,
     "description" TEXT NOT NULL,
     "image_url" VARCHAR(255) NOT NULL,
-    "user_id" INTEGER NOT NULL REFERENCES users(id),
+    "user_id" INTEGER NOT NULL REFERENCES users(id)ON DELETE CASCADE,
     "category_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP WITH TIME ZONE,
     "views_count" INTEGER not NULL default 0
 );
 
 CREATE TABLE "comments"(
-    "id" INTEGER NOT NULL,
-    "post_id" INTEGER NOT NULL,
-    "user_id" INTEGER NOT NULL,
-    "description" TEXT NOT NULL,
-    "created_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-    "updated_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL
+    "id" serial PRIMARY KEY,
+    "post_id" INTEGER NOT NULL REFERENCES posts(id)ON DELETE CASCADE,
+    "user_id" INTEGER NOT NULL REFERENCES users(id)ON DELETE CASCADE,
+    "description" TEXT,
+    "created_at" TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP WITHOUT TIME ZONE
 );
 
 
 CREATE TABLE "likes"(
-    "id" INTEGER NOT NULL,
-    "post_id" INTEGER NOT NULL,
-    "user_id" INTEGER NOT NULL,
-    "status" VARCHAR(255) CHECK
-        ("status" IN('')) NOT NULL
+    "id" serial PRIMARY KEY,
+    "post_id" INTEGER NOT NULL REFERENCES posts(id)ON DELETE CASCADE,
+    "user_id" INTEGER NOT NULL REFERENCES users(id)ON DELETE CASCADE,
+    "status" VARCHAR(255) CHECK("status" IN('like','dislike')) NOT NULL
 );
 
 

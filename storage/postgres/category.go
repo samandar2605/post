@@ -73,11 +73,11 @@ func (cr *categoryRepo) GetAll(param repo.GetCategoryQuery) (*repo.GetAllCategor
 	offset := (param.Page - 1) * param.Limit
 
 	limit := fmt.Sprintf(" LIMIT %d OFFSET %d ", param.Limit, offset)
-	filter := ""
+	filter := "where true"
 	if param.Search != "" {
 		str := "%" + param.Search + "%"
 		filter += fmt.Sprintf(` 
-			where title ILIKE '%s'`, str)
+			and title ILIKE '%s'`, str)
 	}
 
 	query := `
@@ -112,10 +112,11 @@ func (cr *categoryRepo) GetAll(param repo.GetCategoryQuery) (*repo.GetAllCategor
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(result)
 	return &result, nil
 }
 
-func (cr *categoryRepo) Update(category repo.Category) (*repo.Category, error) {
+func (cr *categoryRepo) Update(category *repo.Category) (*repo.Category, error) {
 	query := `
 		update categories set
 			title=$1
@@ -126,7 +127,7 @@ func (cr *categoryRepo) Update(category repo.Category) (*repo.Category, error) {
 		return nil, err
 	}
 
-	return &category, nil
+	return category, nil
 }
 
 func (ur *categoryRepo) Delete(id int) error {
