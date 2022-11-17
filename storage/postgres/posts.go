@@ -61,8 +61,7 @@ func (pr *postRepo) Get(id int) (*repo.Post, error) {
 			user_id,
 			category_id,
 			views_count,
-			created_at,
-			updated_at
+			created_at
 		from posts
 		where id=$1
 	`
@@ -76,7 +75,6 @@ func (pr *postRepo) Get(id int) (*repo.Post, error) {
 		&Post.CategoryId,
 		&Post.ViewsCount,
 		&Post.CreatedAt,
-		&Post.UpdatedAt,
 	); err != nil {
 		return nil, err
 	}
@@ -108,8 +106,7 @@ func (pr *postRepo) GetAll(param repo.GetPostQuery) (*repo.GetAllPostResult, err
 			user_id,
 			category_id,
 			views_count,
-			created_at,
-			updated_at
+			created_at
 		FROM posts
 		` + filter + `
 		ORDER BY created_at desc
@@ -132,7 +129,6 @@ func (pr *postRepo) GetAll(param repo.GetPostQuery) (*repo.GetAllPostResult, err
 			&Post.CategoryId,
 			&Post.ViewsCount,
 			&Post.CreatedAt,
-			&Post.UpdatedAt,
 		); err != nil {
 			return nil, err
 		}
@@ -171,8 +167,8 @@ func (pr *postRepo) Update(post *repo.Post) (*repo.Post, error) {
 		post.Id,
 	)
 
-	if err:=row.Scan(&post.UpdatedAt);err != nil {
-		return nil,err
+	if err := row.Scan(&post.UpdatedAt); err != nil {
+		return nil, err
 	}
 
 	return post, nil

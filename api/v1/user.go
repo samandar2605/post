@@ -124,7 +124,11 @@ func (h *handlerV1) GetUserAll(ctx *gin.Context) {
 		return
 	}
 
-	resp, err := h.storage.User().GetAll(queryParams)
+	resp, err := h.storage.User().GetAll(repo.GetUserQuery{
+		Page:   queryParams.Page,
+		Limit:  queryParams.Limit,
+		Search: queryParams.Search,
+	} )
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),

@@ -5,10 +5,10 @@ import (
 )
 
 type GetCommentQuery struct {
-	Page   int
-	Limit  int
-	PostId int
-	UserId int
+	Page   int `json:"page" db:"page" binding:"required" default:"1"`
+	Limit  int `json:"limit" db:"limit" binding:"required" default:"10"`
+	PostId int `json:"post_id" db:"post_id"`
+	UserId int `json:"user_id" db:"user_id"`
 }
 
 type GetAllCommentsResult struct {

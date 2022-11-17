@@ -127,7 +127,7 @@ func validateGetCommentQuery(ctx *gin.Context) (repo.GetCommentQuery, error) {
 	var (
 		limit  int = 10
 		page   int = 1
-		postId int
+		postId int 
 		userId int
 		err    error
 	)

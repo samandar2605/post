@@ -101,8 +101,7 @@ func (cr *commentRepo) GetAll(param repo.GetCommentQuery) (*repo.GetAllCommentsR
 			post_id,
 			user_id,
 			description,
-			created_at,
-			updated_at
+			created_at
 		FROM comments
 		` + filter + `
 		ORDER BY created_at desc
@@ -122,7 +121,6 @@ func (cr *commentRepo) GetAll(param repo.GetCommentQuery) (*repo.GetAllCommentsR
 			&Comment.UserId,
 			&Comment.Description,
 			&Comment.CreatedAt,
-			&Comment.UpdatedAt,
 		); err != nil {
 			return nil, err
 		}

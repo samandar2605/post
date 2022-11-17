@@ -9,5 +9,5 @@ type Category struct {
 }
 
 type CreateCategory struct {
-	Title string `json:"title"`
+	Title string `json:"title" binding:"required"`
 }

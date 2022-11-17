@@ -3,9 +3,9 @@ package repo
 import "time"
 
 type GetPostQuery struct {
-	Page   int
-	Limit  int
-	Search string
+	Page   int `json:"page" db:"page" binding:"required" default:"1"`
+	Limit  int `json:"limit" db:"limit" binding:"required" default:"10"`
+	Search string `json:"search"`
 }
 
 type GetAllPostResult struct {
